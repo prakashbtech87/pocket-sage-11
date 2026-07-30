@@ -14,7 +14,96 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      category_rules: {
+        Row: {
+          category: string
+          created_at: string
+          id: string
+          is_avoidable: boolean
+          keyword: string
+          user_id: string
+        }
+        Insert: {
+          category: string
+          created_at?: string
+          id?: string
+          is_avoidable?: boolean
+          keyword: string
+          user_id: string
+        }
+        Update: {
+          category?: string
+          created_at?: string
+          id?: string
+          is_avoidable?: boolean
+          keyword?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      expenses: {
+        Row: {
+          amount_inr: number
+          category: string
+          created_at: string
+          description: string
+          id: string
+          is_avoidable: boolean
+          spent_on: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          amount_inr: number
+          category?: string
+          created_at?: string
+          description: string
+          id?: string
+          is_avoidable?: boolean
+          spent_on?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          amount_inr?: number
+          category?: string
+          created_at?: string
+          description?: string
+          id?: string
+          is_avoidable?: boolean
+          spent_on?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          created_at: string
+          daily_report_enabled: boolean
+          display_name: string | null
+          id: string
+          report_email: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          daily_report_enabled?: boolean
+          display_name?: string | null
+          id: string
+          report_email?: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          daily_report_enabled?: boolean
+          display_name?: string | null
+          id?: string
+          report_email?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
