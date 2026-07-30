@@ -109,6 +109,10 @@ function Landing() {
           Your expenses are stored privately in this app's own cloud database — not on your device —
           so the same data shows up on every phone, tablet and laptop you sign in from.
         </p>
+
+        <p className="mt-6 text-xs text-muted-foreground">
+          Created by Prakash Karuppusamy.
+        </p>
       </div>
     </main>
   );
