@@ -62,7 +62,7 @@ function Landing() {
 
       <div className="relative mx-auto flex max-w-3xl flex-col px-6 pt-20 pb-24">
         <span className="text-xs font-semibold tracking-[0.25em] text-primary uppercase">
-          Prakash Expense Tracker
+          Vibe coded by Prakash Karuppusamy
         </span>
 
         <h1 className="mt-5 text-4xl leading-[1.05] font-bold text-foreground sm:text-6xl">
