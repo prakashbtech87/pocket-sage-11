@@ -10,33 +10,44 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ApiPublicHooksDailyReportRouteImport } from './routes/api/public/hooks/daily-report'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiPublicHooksDailyReportRoute =
+  ApiPublicHooksDailyReportRouteImport.update({
+    id: '/api/public/hooks/daily-report',
+    path: '/api/public/hooks/daily-report',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/api/public/hooks/daily-report': typeof ApiPublicHooksDailyReportRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/api/public/hooks/daily-report': typeof ApiPublicHooksDailyReportRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/api/public/hooks/daily-report': typeof ApiPublicHooksDailyReportRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths: '/' | '/api/public/hooks/daily-report'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to: '/' | '/api/public/hooks/daily-report'
+  id: '__root__' | '/' | '/api/public/hooks/daily-report'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  ApiPublicHooksDailyReportRoute: typeof ApiPublicHooksDailyReportRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +59,19 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/public/hooks/daily-report': {
+      id: '/api/public/hooks/daily-report'
+      path: '/api/public/hooks/daily-report'
+      fullPath: '/api/public/hooks/daily-report'
+      preLoaderRoute: typeof ApiPublicHooksDailyReportRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  ApiPublicHooksDailyReportRoute: ApiPublicHooksDailyReportRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
