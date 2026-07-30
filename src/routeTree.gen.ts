@@ -13,6 +13,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AuthenticatedInsightsRouteImport } from './routes/_authenticated/insights'
+import { Route as AuthenticatedSettingsRouteImport } from './routes/_authenticated/settings'
 import { Route as AuthenticatedTrackRouteImport } from './routes/_authenticated/track'
 import { Route as ApiPublicHooksDailyReportRouteImport } from './routes/api/public/hooks/daily-report'
 
@@ -35,6 +36,11 @@ const AuthenticatedInsightsRoute = AuthenticatedInsightsRouteImport.update({
   path: '/insights',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedSettingsRoute = AuthenticatedSettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedTrackRoute = AuthenticatedTrackRouteImport.update({
   id: '/track',
   path: '/track',
@@ -51,6 +57,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/insights': typeof AuthenticatedInsightsRoute
+  '/settings': typeof AuthenticatedSettingsRoute
   '/track': typeof AuthenticatedTrackRoute
   '/api/public/hooks/daily-report': typeof ApiPublicHooksDailyReportRoute
 }
@@ -58,6 +65,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/insights': typeof AuthenticatedInsightsRoute
+  '/settings': typeof AuthenticatedSettingsRoute
   '/track': typeof AuthenticatedTrackRoute
   '/api/public/hooks/daily-report': typeof ApiPublicHooksDailyReportRoute
 }
@@ -67,21 +75,34 @@ export interface FileRoutesById {
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRoute
   '/_authenticated/insights': typeof AuthenticatedInsightsRoute
+  '/_authenticated/settings': typeof AuthenticatedSettingsRoute
   '/_authenticated/track': typeof AuthenticatedTrackRoute
   '/api/public/hooks/daily-report': typeof ApiPublicHooksDailyReportRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    '/' | '/auth' | '/insights' | '/track' | '/api/public/hooks/daily-report'
+    | '/'
+    | '/auth'
+    | '/insights'
+    | '/settings'
+    | '/track'
+    | '/api/public/hooks/daily-report'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/auth' | '/insights' | '/track' | '/api/public/hooks/daily-report'
+  to:
+    | '/'
+    | '/auth'
+    | '/insights'
+    | '/settings'
+    | '/track'
+    | '/api/public/hooks/daily-report'
   id:
     | '__root__'
     | '/'
     | '/_authenticated'
     | '/auth'
     | '/_authenticated/insights'
+    | '/_authenticated/settings'
     | '/_authenticated/track'
     | '/api/public/hooks/daily-report'
   fileRoutesById: FileRoutesById
@@ -123,6 +144,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedInsightsRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/settings': {
+      id: '/_authenticated/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof AuthenticatedSettingsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/track': {
       id: '/_authenticated/track'
       path: '/track'
@@ -142,11 +170,13 @@ declare module '@tanstack/react-router' {
 
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedInsightsRoute: typeof AuthenticatedInsightsRoute
+  AuthenticatedSettingsRoute: typeof AuthenticatedSettingsRoute
   AuthenticatedTrackRoute: typeof AuthenticatedTrackRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedInsightsRoute: AuthenticatedInsightsRoute,
+  AuthenticatedSettingsRoute: AuthenticatedSettingsRoute,
   AuthenticatedTrackRoute: AuthenticatedTrackRoute,
 }
 

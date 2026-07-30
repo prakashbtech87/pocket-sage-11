@@ -36,7 +36,7 @@ function SettingsPage() {
 
   const { data: profile, isPending } = useQuery({
     queryKey: ["profile"],
-    queryFn: () => fetchProfile({ data: {} }),
+    queryFn: () => fetchProfile(),
   });
 
   const [name, setName] = useState("");
@@ -67,7 +67,7 @@ function SettingsPage() {
   });
 
   const testMutation = useMutation({
-    mutationFn: () => sendNow({ data: {} }),
+    mutationFn: () => sendNow(),
     onSuccess: () => toast.success(`Report sent to ${email}`),
     onError: (error: Error) => toast.error(error.message),
   });
