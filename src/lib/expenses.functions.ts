@@ -161,7 +161,14 @@ export const updateProfile = createServerFn({ method: "POST" })
 
 export const sendReportNow = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .handler(async ({ context }) => {
-    const { sendDailyReportForUser } = await import("./report.server");
-    return sendDailyReportForUser(context.userId);
+  .inputValidator((input: unknown) =>
+    z
+      .object({ period: z.enum(["daily", "weekly", "monthly"]).default("daily") })
+      .default({ period: "daily" })
+      .parse(input ?? {}),
+  )
+  .handler(async ({ data, context }) => {
+    const { sendReportForUser } = await import("./report.server");
+    return sendReportForUser(context.userId, data.period);
   });
+
