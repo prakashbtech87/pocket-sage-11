@@ -72,8 +72,14 @@ function Landing() {
         </h1>
 
         <p className="mt-6 max-w-lg text-lg leading-relaxed text-muted-foreground">
-          Type what you spent on and how much. The app sorts it, spots what was avoidable, and
-          emails you a full report every night at 9 PM.
+          I am Prakash Karuppusamy, and I'll be helping you build your Financial Wellbeing. Type
+          what you spent on and how much — the app sorts it, spots what was avoidable, and emails
+          the report to <span className="text-foreground">your own inbox</span>, every night at 9 PM.
+        </p>
+
+        <p className="mt-4 max-w-lg text-sm leading-relaxed text-muted-foreground">
+          Your entries stay private to your own login. I can't see them, and reports are only ever
+          sent to the email address of the account you sign in with.
         </p>
 
         <div className="mt-9 flex flex-wrap gap-3">
