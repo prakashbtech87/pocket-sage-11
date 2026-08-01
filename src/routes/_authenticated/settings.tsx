@@ -106,7 +106,8 @@ function SettingsPage() {
             className="h-11 rounded-xl bg-secondary"
           />
           <p className="text-xs text-muted-foreground">
-            Delivered automatically every day at 9:00 PM IST from your connected Gmail account.
+            Delivered automatically every day at 9:00 PM IST. It arrives as a no-reply message —
+            replies aren't monitored.
           </p>
         </div>
 
@@ -127,20 +128,24 @@ function SettingsPage() {
             {saveMutation.isPending && <Loader2 className="size-4 animate-spin" />}
             Save settings
           </Button>
-          <Button
-            variant="outline"
-            onClick={() => testMutation.mutate()}
-            disabled={testMutation.isPending}
-            className="rounded-xl"
-          >
-            {testMutation.isPending ? (
-              <Loader2 className="size-4 animate-spin" />
-            ) : (
-              <Mail className="size-4" />
-            )}
-            Send today's report now
-          </Button>
+          {(["daily", "weekly", "monthly"] as const).map((period) => (
+            <Button
+              key={period}
+              variant="outline"
+              onClick={() => testMutation.mutate(period)}
+              disabled={testMutation.isPending}
+              className="rounded-xl capitalize"
+            >
+              {testMutation.isPending && testMutation.variables === period ? (
+                <Loader2 className="size-4 animate-spin" />
+              ) : (
+                <Mail className="size-4" />
+              )}
+              Send {period}
+            </Button>
+          ))}
         </div>
+
       </section>
 
       <section className="space-y-4 rounded-3xl border border-border bg-card p-6">
