@@ -138,6 +138,33 @@ function HomePage() {
       </div>
 
       <section className="rounded-3xl border border-border bg-card p-6">
+        <div className="flex items-center gap-2 text-primary">
+          <Mail className="size-4" />
+          <h2 className="text-sm font-semibold">Send a report now</h2>
+        </div>
+        <p className="mt-2 text-xs leading-relaxed text-muted-foreground">
+          Goes only to {profile?.report_email ?? "your signed-in email"} — the address you logged in
+          with.
+        </p>
+        <div className="mt-4 flex flex-wrap gap-2">
+          {(["daily", "weekly", "monthly"] as const).map((period) => (
+            <Button
+              key={period}
+              variant="secondary"
+              size="sm"
+              disabled={sending !== null}
+              onClick={() => send(period)}
+              className="rounded-full capitalize"
+            >
+              {sending === period ? "Sending…" : period}
+            </Button>
+          ))}
+        </div>
+      </section>
+
+
+
+      <section className="rounded-3xl border border-border bg-card p-6">
         <h2 className="text-sm font-semibold text-foreground">Where to next</h2>
         <div className="mt-4 grid gap-3 sm:grid-cols-2">
           {QUICK_LINKS.map((link) => (
