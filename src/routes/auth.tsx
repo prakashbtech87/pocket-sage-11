@@ -9,6 +9,7 @@ import { Label } from "@/components/ui/label";
 import { Loader2 } from "lucide-react";
 
 export const Route = createFileRoute("/auth")({
+  ssr: false,
   head: () => ({
     meta: [
       { title: "Sign in — Prakash Expense Tracker" },
