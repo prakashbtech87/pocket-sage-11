@@ -11,6 +11,7 @@ import {
   setExpenseCategory,
 } from "@/lib/expenses.functions";
 import { CATEGORIES, CATEGORY_COLORS, formatINR, istToday } from "@/lib/expense-categories";
+import { BudgetBanner } from "@/components/budget";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -103,6 +104,7 @@ function TrackPage() {
 
   return (
     <div className="space-y-6">
+      <BudgetBanner />
       <section className="rounded-3xl border border-border bg-card p-6 glow-ring">
         <p className="text-sm text-muted-foreground">Spent today</p>
         <p className="tnum mt-1 text-5xl font-bold text-primary">{formatINR(todayTotal)}</p>
