@@ -1,8 +1,11 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
-import { ArrowRight, BarChart3, PlusCircle, Settings, Table2, Sparkles, ShieldCheck } from "lucide-react";
-import { getProfile } from "@/lib/expenses.functions";
+import { useState } from "react";
+import { toast } from "sonner";
+import { ArrowRight, BarChart3, Mail, PlusCircle, Settings, Table2, Sparkles, ShieldCheck } from "lucide-react";
+import { getProfile, sendReportNow } from "@/lib/expenses.functions";
+import { Button } from "@/components/ui/button";
 import heroImg from "@/assets/home-hero.png";
 import savingsImg from "@/assets/home-savings.png";
 
