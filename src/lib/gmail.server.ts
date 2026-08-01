@@ -18,6 +18,29 @@ function toBase64Url(input: string): string {
     .replace(/=+$/, "");
 }
 
+let cachedSender: string | null | undefined;
+
+async function getSenderAddress(lovableKey: string, connectionKey: string) {
+  if (cachedSender !== undefined) return cachedSender;
+  try {
+    const res = await fetch(`${GATEWAY_URL}/users/me/profile`, {
+      headers: {
+        Authorization: `Bearer ${lovableKey}`,
+        "X-Connection-Api-Key": connectionKey,
+      },
+    });
+    if (!res.ok) {
+      cachedSender = null;
+      return cachedSender;
+    }
+    const body = (await res.json()) as { emailAddress?: string };
+    cachedSender = body.emailAddress ?? null;
+  } catch {
+    cachedSender = null;
+  }
+  return cachedSender;
+}
+
 export async function sendGmail(options: {
   to: string;
   subject: string;
