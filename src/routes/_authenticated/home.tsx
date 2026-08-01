@@ -3,9 +3,10 @@ import { useQuery } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { useState } from "react";
 import { toast } from "sonner";
-import { ArrowRight, BarChart3, Mail, PlusCircle, Settings, Table2, Sparkles, ShieldCheck } from "lucide-react";
+import { ArrowRight, BarChart3, Mail, PlusCircle, Settings, Table2, Sparkles, ShieldCheck, Wallet } from "lucide-react";
 import { getProfile, sendReportNow } from "@/lib/expenses.functions";
 import { Button } from "@/components/ui/button";
+import { BudgetBanner } from "@/components/budget";
 import heroImg from "@/assets/home-hero.png";
 import savingsImg from "@/assets/home-savings.png";
 
@@ -56,6 +57,7 @@ const VIBE_TIPS = [
 
 const QUICK_LINKS = [
   { to: "/track", label: "Log a spend", body: "Two fields — what and how much.", icon: PlusCircle },
+  { to: "/budget", label: "Monthly budget", body: "Set your money, see what's left.", icon: Wallet },
   { to: "/insights", label: "Insights", body: "Daily, weekly and monthly views.", icon: BarChart3 },
   { to: "/data", label: "Your data", body: "See every row stored for you.", icon: Table2 },
   { to: "/settings", label: "Settings", body: "Reports, email and profile.", icon: Settings },
@@ -89,6 +91,7 @@ function HomePage() {
 
   return (
     <div className="space-y-6">
+      <BudgetBanner />
       <section className="relative overflow-hidden rounded-3xl border border-border bg-card p-6">
         <div className="flex items-start gap-4">
           <div className="min-w-0 flex-1">
