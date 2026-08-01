@@ -18,7 +18,36 @@ function toBase64Url(input: string): string {
     .replace(/=+$/, "");
 }
 
-export async function sendGmail(options: { to: string; subject: string; html: string }) {
+let cachedSender: string | null | undefined;
+
+async function getSenderAddress(lovableKey: string, connectionKey: string) {
+  if (cachedSender !== undefined) return cachedSender;
+  try {
+    const res = await fetch(`${GATEWAY_URL}/users/me/profile`, {
+      headers: {
+        Authorization: `Bearer ${lovableKey}`,
+        "X-Connection-Api-Key": connectionKey,
+      },
+    });
+    if (!res.ok) {
+      cachedSender = null;
+      return cachedSender;
+    }
+    const body = (await res.json()) as { emailAddress?: string };
+    cachedSender = body.emailAddress ?? null;
+  } catch {
+    cachedSender = null;
+  }
+  return cachedSender;
+}
+
+export async function sendGmail(options: {
+  to: string;
+  subject: string;
+  html: string;
+  fromName?: string;
+  replyTo?: string;
+}) {
   const lovableKey = process.env.LOVABLE_API_KEY;
   const connectionKey = process.env.GOOGLE_MAIL_API_KEY;
 
@@ -28,9 +57,17 @@ export async function sendGmail(options: { to: string; subject: string; html: st
     );
   }
 
+  const senderAddress = await getSenderAddress(lovableKey, connectionKey);
+
   const raw = [
-    // Gmail fills in the authenticated From address; we mark it machine-generated.
+    // Recipients see the app's display name first; the mailbox itself stays machine-only.
+    ...(senderAddress
+      ? [
+          `From: ${encodeHeader(options.fromName ?? "Prakash Expense Tracker (no-reply)")} <${senderAddress}>`,
+        ]
+      : []),
     `To: ${options.to}`,
+    ...(options.replyTo ? [`Reply-To: ${options.replyTo}`] : []),
     `Subject: ${encodeHeader(options.subject)}`,
     "MIME-Version: 1.0",
     "Auto-Submitted: auto-generated",

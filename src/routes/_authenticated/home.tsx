@@ -1,8 +1,11 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
-import { ArrowRight, BarChart3, PlusCircle, Settings, Table2, Sparkles, ShieldCheck } from "lucide-react";
-import { getProfile } from "@/lib/expenses.functions";
+import { useState } from "react";
+import { toast } from "sonner";
+import { ArrowRight, BarChart3, Mail, PlusCircle, Settings, Table2, Sparkles, ShieldCheck } from "lucide-react";
+import { getProfile, sendReportNow } from "@/lib/expenses.functions";
+import { Button } from "@/components/ui/button";
 import heroImg from "@/assets/home-hero.png";
 import savingsImg from "@/assets/home-savings.png";
 
@@ -65,6 +68,20 @@ function dayIndex() {
 function HomePage() {
   const fetchProfile = useServerFn(getProfile);
   const { data: profile } = useQuery({ queryKey: ["profile"], queryFn: () => fetchProfile() });
+  const sendReport = useServerFn(sendReportNow);
+  const [sending, setSending] = useState<null | "daily" | "weekly" | "monthly">(null);
+
+  async function send(period: "daily" | "weekly" | "monthly") {
+    setSending(period);
+    try {
+      const res = await sendReport({ data: { period } });
+      toast.success(`${period[0].toUpperCase()}${period.slice(1)} report sent to ${res.to}`);
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Could not send the report");
+    } finally {
+      setSending(null);
+    }
+  }
 
   const i = dayIndex();
   const tip = MONEY_TIPS[i % MONEY_TIPS.length];
@@ -119,6 +136,33 @@ function HomePage() {
           <p className="mt-3 text-sm leading-relaxed text-foreground">{vibe}</p>
         </section>
       </div>
+
+      <section className="rounded-3xl border border-border bg-card p-6">
+        <div className="flex items-center gap-2 text-primary">
+          <Mail className="size-4" />
+          <h2 className="text-sm font-semibold">Send a report now</h2>
+        </div>
+        <p className="mt-2 text-xs leading-relaxed text-muted-foreground">
+          Goes only to {profile?.report_email ?? "your signed-in email"} — the address you logged in
+          with.
+        </p>
+        <div className="mt-4 flex flex-wrap gap-2">
+          {(["daily", "weekly", "monthly"] as const).map((period) => (
+            <Button
+              key={period}
+              variant="secondary"
+              size="sm"
+              disabled={sending !== null}
+              onClick={() => send(period)}
+              className="rounded-full capitalize"
+            >
+              {sending === period ? "Sending…" : period}
+            </Button>
+          ))}
+        </div>
+      </section>
+
+
 
       <section className="rounded-3xl border border-border bg-card p-6">
         <h2 className="text-sm font-semibold text-foreground">Where to next</h2>
