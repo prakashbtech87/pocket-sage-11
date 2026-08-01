@@ -34,9 +34,15 @@ export async function sendGmail(options: {
     );
   }
 
+  const senderAddress = await getSenderAddress(lovableKey, connectionKey);
+
   const raw = [
-    // Gmail fills in the authenticated address; the display name is what recipients see first.
-    `From: ${encodeHeader(options.fromName ?? "Prakash Expense Tracker (no-reply)")}`,
+    // Recipients see the app's display name first; the mailbox itself stays machine-only.
+    ...(senderAddress
+      ? [
+          `From: ${encodeHeader(options.fromName ?? "Prakash Expense Tracker (no-reply)")} <${senderAddress}>`,
+        ]
+      : []),
     `To: ${options.to}`,
     ...(options.replyTo ? [`Reply-To: ${options.replyTo}`] : []),
     `Subject: ${encodeHeader(options.subject)}`,
