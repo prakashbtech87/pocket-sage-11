@@ -52,7 +52,7 @@ function Landing() {
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => {
-      if (data.session) navigate({ to: "/track" });
+      if (data.session) navigate({ to: "/home" });
     });
   }, [navigate]);
 
