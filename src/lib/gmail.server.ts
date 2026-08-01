@@ -18,7 +18,13 @@ function toBase64Url(input: string): string {
     .replace(/=+$/, "");
 }
 
-export async function sendGmail(options: { to: string; subject: string; html: string }) {
+export async function sendGmail(options: {
+  to: string;
+  subject: string;
+  html: string;
+  fromName?: string;
+  replyTo?: string;
+}) {
   const lovableKey = process.env.LOVABLE_API_KEY;
   const connectionKey = process.env.GOOGLE_MAIL_API_KEY;
 
