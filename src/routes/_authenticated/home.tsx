@@ -68,6 +68,20 @@ function dayIndex() {
 function HomePage() {
   const fetchProfile = useServerFn(getProfile);
   const { data: profile } = useQuery({ queryKey: ["profile"], queryFn: () => fetchProfile() });
+  const sendReport = useServerFn(sendReportNow);
+  const [sending, setSending] = useState<null | "daily" | "weekly" | "monthly">(null);
+
+  async function send(period: "daily" | "weekly" | "monthly") {
+    setSending(period);
+    try {
+      const res = await sendReport({ data: { period } });
+      toast.success(`${period[0].toUpperCase()}${period.slice(1)} report sent to ${res.to}`);
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Could not send the report");
+    } finally {
+      setSending(null);
+    }
+  }
 
   const i = dayIndex();
   const tip = MONEY_TIPS[i % MONEY_TIPS.length];
