@@ -29,7 +29,7 @@ export async function sendGmail(options: { to: string; subject: string; html: st
   }
 
   const raw = [
-    `From: ${encodeHeader("Prakash Expense Tracker (no-reply)")} <me>`,
+    // Gmail fills in the authenticated From address; we mark it machine-generated.
     `To: ${options.to}`,
     `Subject: ${encodeHeader(options.subject)}`,
     "MIME-Version: 1.0",
