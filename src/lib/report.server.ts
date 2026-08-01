@@ -216,7 +216,12 @@ export async function sendReportForUser(
     last30,
   });
 
-  await sendGmail({ to: profile.report_email, subject, html });
+  await sendGmail({
+    to: profile.report_email,
+    subject,
+    html,
+    replyTo: profile.report_email,
+  });
 
   return { sent: true as const, to: profile.report_email, count: periodRows.length, period };
 }
