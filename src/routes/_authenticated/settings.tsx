@@ -67,10 +67,11 @@ function SettingsPage() {
   });
 
   const testMutation = useMutation({
-    mutationFn: () => sendNow(),
+    mutationFn: (period: "daily" | "weekly" | "monthly") => sendNow({ data: { period } }),
     onSuccess: () => toast.success(`Report sent to ${email}`),
     onError: (error: Error) => toast.error(error.message),
   });
+
 
   if (isPending) {
     return (
