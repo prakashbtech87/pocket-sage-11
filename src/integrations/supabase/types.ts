@@ -91,7 +91,7 @@ export type Database = {
           daily_report_enabled?: boolean
           display_name?: string | null
           id: string
-          report_email?: string
+          report_email: string
           updated_at?: string
         }
         Update: {

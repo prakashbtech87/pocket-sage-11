@@ -106,8 +106,9 @@ function SettingsPage() {
             className="h-11 rounded-xl bg-secondary"
           />
           <p className="text-xs text-muted-foreground">
-            Delivered automatically every day at 9:00 PM IST. It arrives as a no-reply message —
-            replies aren't monitored.
+            This defaults to the email address of the account you signed in with — your report only
+            ever goes to you, never to the app author or anyone else. Delivered automatically every
+            day at 9:00 PM IST as a no-reply message.
           </p>
         </div>
 

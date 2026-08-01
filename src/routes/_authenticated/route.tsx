@@ -1,6 +1,6 @@
 import { createFileRoute, Outlet, redirect, Link, useNavigate } from "@tanstack/react-router";
 import { supabase } from "@/integrations/supabase/client";
-import { BarChart3, PlusCircle, Settings, LogOut, Table2 } from "lucide-react";
+import { BarChart3, PlusCircle, Settings, LogOut, Table2, Home } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 export const Route = createFileRoute("/_authenticated")({
@@ -14,6 +14,7 @@ export const Route = createFileRoute("/_authenticated")({
 });
 
 const NAV = [
+  { to: "/home", label: "Home", icon: Home },
   { to: "/track", label: "Today", icon: PlusCircle },
   { to: "/insights", label: "Insights", icon: BarChart3 },
   { to: "/data", label: "Data", icon: Table2 },
@@ -33,8 +34,13 @@ function AuthenticatedLayout() {
     <div className="min-h-screen bg-background pb-24 sm:pb-0">
       <header className="sticky top-0 z-20 border-b border-border bg-background/85 backdrop-blur">
         <div className="mx-auto flex max-w-2xl items-center justify-between px-5 py-3.5">
-          <Link to="/track" className="text-xs font-semibold tracking-[0.2em] text-primary uppercase">
-            Prakash Expense Tracker
+          <Link to="/home" className="min-w-0">
+            <span className="block text-xs font-semibold tracking-[0.2em] text-primary uppercase">
+              Prakash Expense Tracker
+            </span>
+            <span className="block text-[10px] text-muted-foreground">
+              Idea by Prakash Karuppusamy
+            </span>
           </Link>
           <div className="flex items-center gap-1">
             <nav className="hidden items-center gap-1 sm:flex">

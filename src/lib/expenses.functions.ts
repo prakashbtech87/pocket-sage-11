@@ -138,10 +138,14 @@ export const getProfile = createServerFn({ method: "POST" })
       .maybeSingle();
 
     if (error) throw new Error(error.message);
+
+    // Reports always default to the signed-in user's own email address.
+    const email = (context.claims as { email?: string } | undefined)?.email ?? "";
+
     return (
       data ?? {
-        display_name: "Prakash",
-        report_email: "prakashbtech87@gmail.com",
+        display_name: email ? email.split("@")[0] : "there",
+        report_email: email,
         daily_report_enabled: true,
       }
     );
