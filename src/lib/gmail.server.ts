@@ -29,14 +29,17 @@ export async function sendGmail(options: { to: string; subject: string; html: st
   }
 
   const raw = [
+    // Gmail fills in the authenticated From address; we mark it machine-generated.
     `To: ${options.to}`,
     `Subject: ${encodeHeader(options.subject)}`,
     "MIME-Version: 1.0",
+    "Auto-Submitted: auto-generated",
     'Content-Type: text/html; charset="UTF-8"',
     "Content-Transfer-Encoding: 8bit",
     "",
     options.html,
   ].join("\r\n");
+
 
   const response = await fetch(`${GATEWAY_URL}/users/me/messages/send`, {
     method: "POST",
