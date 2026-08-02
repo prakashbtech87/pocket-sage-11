@@ -9,6 +9,7 @@ import {
   Home,
   Wallet,
   ClipboardCheck,
+  Info,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -29,6 +30,7 @@ const NAV = [
   { to: "/review", label: "Review", icon: ClipboardCheck },
   { to: "/insights", label: "Insights", icon: BarChart3 },
   { to: "/data", label: "Data", icon: Table2 },
+  { to: "/about", label: "About", icon: Info },
   { to: "/settings", label: "Settings", icon: Settings },
 ] as const;
 

@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { useState } from "react";
 import { toast } from "sonner";
-import { ArrowRight, BarChart3, Mail, PlusCircle, Settings, Table2, Sparkles, ShieldCheck, Wallet } from "lucide-react";
+import { ArrowRight, BarChart3, Mail, PlusCircle, Settings, Table2, Sparkles, ShieldCheck, Wallet, Info } from "lucide-react";
 import { getProfile, sendReportNow } from "@/lib/expenses.functions";
 import { Button } from "@/components/ui/button";
 import { BudgetBanner } from "@/components/budget";
@@ -60,6 +60,7 @@ const QUICK_LINKS = [
   { to: "/budget", label: "Monthly budget", body: "Set your money, see what's left.", icon: Wallet },
   { to: "/insights", label: "Insights", body: "Daily, weekly and monthly views.", icon: BarChart3 },
   { to: "/data", label: "Your data", body: "See every row stored for you.", icon: Table2 },
+  { to: "/about", label: "About", body: "Purpose, guide and contact.", icon: Info },
   { to: "/settings", label: "Settings", body: "Reports, email and profile.", icon: Settings },
 ] as const;
 
