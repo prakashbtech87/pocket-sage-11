@@ -16,6 +16,7 @@ import { Route as AuthenticatedBudgetRouteImport } from './routes/_authenticated
 import { Route as AuthenticatedDataRouteImport } from './routes/_authenticated/data'
 import { Route as AuthenticatedHomeRouteImport } from './routes/_authenticated/home'
 import { Route as AuthenticatedInsightsRouteImport } from './routes/_authenticated/insights'
+import { Route as AuthenticatedReviewRouteImport } from './routes/_authenticated/review'
 import { Route as AuthenticatedSettingsRouteImport } from './routes/_authenticated/settings'
 import { Route as AuthenticatedTrackRouteImport } from './routes/_authenticated/track'
 import { Route as ApiPublicHooksDailyReportRouteImport } from './routes/api/public/hooks/daily-report'
@@ -54,6 +55,11 @@ const AuthenticatedInsightsRoute = AuthenticatedInsightsRouteImport.update({
   path: '/insights',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedReviewRoute = AuthenticatedReviewRouteImport.update({
+  id: '/review',
+  path: '/review',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedSettingsRoute = AuthenticatedSettingsRouteImport.update({
   id: '/settings',
   path: '/settings',
@@ -78,6 +84,7 @@ export interface FileRoutesByFullPath {
   '/data': typeof AuthenticatedDataRoute
   '/home': typeof AuthenticatedHomeRoute
   '/insights': typeof AuthenticatedInsightsRoute
+  '/review': typeof AuthenticatedReviewRoute
   '/settings': typeof AuthenticatedSettingsRoute
   '/track': typeof AuthenticatedTrackRoute
   '/api/public/hooks/daily-report': typeof ApiPublicHooksDailyReportRoute
@@ -89,6 +96,7 @@ export interface FileRoutesByTo {
   '/data': typeof AuthenticatedDataRoute
   '/home': typeof AuthenticatedHomeRoute
   '/insights': typeof AuthenticatedInsightsRoute
+  '/review': typeof AuthenticatedReviewRoute
   '/settings': typeof AuthenticatedSettingsRoute
   '/track': typeof AuthenticatedTrackRoute
   '/api/public/hooks/daily-report': typeof ApiPublicHooksDailyReportRoute
@@ -102,6 +110,7 @@ export interface FileRoutesById {
   '/_authenticated/data': typeof AuthenticatedDataRoute
   '/_authenticated/home': typeof AuthenticatedHomeRoute
   '/_authenticated/insights': typeof AuthenticatedInsightsRoute
+  '/_authenticated/review': typeof AuthenticatedReviewRoute
   '/_authenticated/settings': typeof AuthenticatedSettingsRoute
   '/_authenticated/track': typeof AuthenticatedTrackRoute
   '/api/public/hooks/daily-report': typeof ApiPublicHooksDailyReportRoute
@@ -115,6 +124,7 @@ export interface FileRouteTypes {
     | '/data'
     | '/home'
     | '/insights'
+    | '/review'
     | '/settings'
     | '/track'
     | '/api/public/hooks/daily-report'
@@ -126,6 +136,7 @@ export interface FileRouteTypes {
     | '/data'
     | '/home'
     | '/insights'
+    | '/review'
     | '/settings'
     | '/track'
     | '/api/public/hooks/daily-report'
@@ -138,6 +149,7 @@ export interface FileRouteTypes {
     | '/_authenticated/data'
     | '/_authenticated/home'
     | '/_authenticated/insights'
+    | '/_authenticated/review'
     | '/_authenticated/settings'
     | '/_authenticated/track'
     | '/api/public/hooks/daily-report'
@@ -201,6 +213,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedInsightsRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/review': {
+      id: '/_authenticated/review'
+      path: '/review'
+      fullPath: '/review'
+      preLoaderRoute: typeof AuthenticatedReviewRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/settings': {
       id: '/_authenticated/settings'
       path: '/settings'
@@ -230,6 +249,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedDataRoute: typeof AuthenticatedDataRoute
   AuthenticatedHomeRoute: typeof AuthenticatedHomeRoute
   AuthenticatedInsightsRoute: typeof AuthenticatedInsightsRoute
+  AuthenticatedReviewRoute: typeof AuthenticatedReviewRoute
   AuthenticatedSettingsRoute: typeof AuthenticatedSettingsRoute
   AuthenticatedTrackRoute: typeof AuthenticatedTrackRoute
 }
@@ -239,6 +259,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedDataRoute: AuthenticatedDataRoute,
   AuthenticatedHomeRoute: AuthenticatedHomeRoute,
   AuthenticatedInsightsRoute: AuthenticatedInsightsRoute,
+  AuthenticatedReviewRoute: AuthenticatedReviewRoute,
   AuthenticatedSettingsRoute: AuthenticatedSettingsRoute,
   AuthenticatedTrackRoute: AuthenticatedTrackRoute,
 }
