@@ -89,7 +89,7 @@ function AuthenticatedLayout() {
             <Link
               key={item.to}
               to={item.to}
-              className="flex flex-1 flex-col items-center gap-1 py-3 text-[11px] text-muted-foreground transition-colors [&.active]:text-primary"
+              className="flex min-w-0 flex-1 flex-col items-center gap-1 py-3 text-[10px] text-muted-foreground transition-colors [&.active]:text-primary"
             >
               <item.icon className="size-5" />
               {item.label}
