@@ -8,6 +8,7 @@ import {
   Table2,
   Home,
   Wallet,
+  CalendarDays,
   ClipboardCheck,
   Info,
 } from "lucide-react";
