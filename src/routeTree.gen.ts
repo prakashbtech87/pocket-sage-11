@@ -17,6 +17,7 @@ import { Route as AuthenticatedBudgetRouteImport } from './routes/_authenticated
 import { Route as AuthenticatedDataRouteImport } from './routes/_authenticated/data'
 import { Route as AuthenticatedHomeRouteImport } from './routes/_authenticated/home'
 import { Route as AuthenticatedInsightsRouteImport } from './routes/_authenticated/insights'
+import { Route as AuthenticatedModifyRouteImport } from './routes/_authenticated/modify'
 import { Route as AuthenticatedReviewRouteImport } from './routes/_authenticated/review'
 import { Route as AuthenticatedSettingsRouteImport } from './routes/_authenticated/settings'
 import { Route as AuthenticatedTrackRouteImport } from './routes/_authenticated/track'
@@ -61,6 +62,11 @@ const AuthenticatedInsightsRoute = AuthenticatedInsightsRouteImport.update({
   path: '/insights',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedModifyRoute = AuthenticatedModifyRouteImport.update({
+  id: '/modify',
+  path: '/modify',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedReviewRoute = AuthenticatedReviewRouteImport.update({
   id: '/review',
   path: '/review',
@@ -91,6 +97,7 @@ export interface FileRoutesByFullPath {
   '/data': typeof AuthenticatedDataRoute
   '/home': typeof AuthenticatedHomeRoute
   '/insights': typeof AuthenticatedInsightsRoute
+  '/modify': typeof AuthenticatedModifyRoute
   '/review': typeof AuthenticatedReviewRoute
   '/settings': typeof AuthenticatedSettingsRoute
   '/track': typeof AuthenticatedTrackRoute
@@ -104,6 +111,7 @@ export interface FileRoutesByTo {
   '/data': typeof AuthenticatedDataRoute
   '/home': typeof AuthenticatedHomeRoute
   '/insights': typeof AuthenticatedInsightsRoute
+  '/modify': typeof AuthenticatedModifyRoute
   '/review': typeof AuthenticatedReviewRoute
   '/settings': typeof AuthenticatedSettingsRoute
   '/track': typeof AuthenticatedTrackRoute
@@ -119,6 +127,7 @@ export interface FileRoutesById {
   '/_authenticated/data': typeof AuthenticatedDataRoute
   '/_authenticated/home': typeof AuthenticatedHomeRoute
   '/_authenticated/insights': typeof AuthenticatedInsightsRoute
+  '/_authenticated/modify': typeof AuthenticatedModifyRoute
   '/_authenticated/review': typeof AuthenticatedReviewRoute
   '/_authenticated/settings': typeof AuthenticatedSettingsRoute
   '/_authenticated/track': typeof AuthenticatedTrackRoute
@@ -134,6 +143,7 @@ export interface FileRouteTypes {
     | '/data'
     | '/home'
     | '/insights'
+    | '/modify'
     | '/review'
     | '/settings'
     | '/track'
@@ -147,6 +157,7 @@ export interface FileRouteTypes {
     | '/data'
     | '/home'
     | '/insights'
+    | '/modify'
     | '/review'
     | '/settings'
     | '/track'
@@ -161,6 +172,7 @@ export interface FileRouteTypes {
     | '/_authenticated/data'
     | '/_authenticated/home'
     | '/_authenticated/insights'
+    | '/_authenticated/modify'
     | '/_authenticated/review'
     | '/_authenticated/settings'
     | '/_authenticated/track'
@@ -232,6 +244,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedInsightsRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/modify': {
+      id: '/_authenticated/modify'
+      path: '/modify'
+      fullPath: '/modify'
+      preLoaderRoute: typeof AuthenticatedModifyRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/review': {
       id: '/_authenticated/review'
       path: '/review'
@@ -269,6 +288,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedDataRoute: typeof AuthenticatedDataRoute
   AuthenticatedHomeRoute: typeof AuthenticatedHomeRoute
   AuthenticatedInsightsRoute: typeof AuthenticatedInsightsRoute
+  AuthenticatedModifyRoute: typeof AuthenticatedModifyRoute
   AuthenticatedReviewRoute: typeof AuthenticatedReviewRoute
   AuthenticatedSettingsRoute: typeof AuthenticatedSettingsRoute
   AuthenticatedTrackRoute: typeof AuthenticatedTrackRoute
@@ -280,6 +300,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedDataRoute: AuthenticatedDataRoute,
   AuthenticatedHomeRoute: AuthenticatedHomeRoute,
   AuthenticatedInsightsRoute: AuthenticatedInsightsRoute,
+  AuthenticatedModifyRoute: AuthenticatedModifyRoute,
   AuthenticatedReviewRoute: AuthenticatedReviewRoute,
   AuthenticatedSettingsRoute: AuthenticatedSettingsRoute,
   AuthenticatedTrackRoute: AuthenticatedTrackRoute,
@@ -297,13 +318,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
