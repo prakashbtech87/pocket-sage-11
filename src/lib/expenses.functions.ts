@@ -128,6 +128,30 @@ export const setExpenseCategory = createServerFn({ method: "POST" })
     return { ok: true };
   });
 
+const EditInput = z.object({
+  id: z.string().uuid(),
+  description: z.string().trim().min(1).max(120),
+  amount: z.number().positive().max(10_000_000),
+  spent_on: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+});
+
+export const updateExpense = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((input: unknown) => EditInput.parse(input))
+  .handler(async ({ data, context }) => {
+    const { error } = await context.supabase
+      .from("expenses")
+      .update({
+        description: data.description,
+        amount_inr: data.amount,
+        spent_on: data.spent_on,
+      })
+      .eq("id", data.id);
+
+    if (error) throw new Error(error.message);
+    return { ok: true };
+  });
+
 export const getProfile = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .handler(async ({ context }) => {

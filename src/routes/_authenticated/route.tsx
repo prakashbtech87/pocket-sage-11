@@ -8,6 +8,7 @@ import {
   Table2,
   Home,
   Wallet,
+  CalendarDays,
   ClipboardCheck,
   Info,
 } from "lucide-react";
@@ -26,6 +27,7 @@ export const Route = createFileRoute("/_authenticated")({
 const NAV = [
   { to: "/home", label: "Home", icon: Home },
   { to: "/track", label: "Today", icon: PlusCircle },
+  { to: "/modify", label: "Modify", icon: CalendarDays },
   { to: "/budget", label: "Budget", icon: Wallet },
   { to: "/review", label: "Review", icon: ClipboardCheck },
   { to: "/insights", label: "Insights", icon: BarChart3 },
