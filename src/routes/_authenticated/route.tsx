@@ -11,6 +11,7 @@ import {
   CalendarDays,
   ClipboardCheck,
   Info,
+  Mic,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -28,6 +29,7 @@ const NAV = [
   { to: "/home", label: "Home", icon: Home },
   { to: "/track", label: "Today", icon: PlusCircle },
   { to: "/modify", label: "Modify", icon: CalendarDays },
+  { to: "/voice-notes", label: "Voice", icon: Mic },
   { to: "/budget", label: "Budget", icon: Wallet },
   { to: "/review", label: "Review", icon: ClipboardCheck },
   { to: "/insights", label: "Insights", icon: BarChart3 },

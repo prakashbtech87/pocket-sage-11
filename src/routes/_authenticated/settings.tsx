@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
+import { ThemePicker } from "@/components/theme-picker";
 
 export const Route = createFileRoute("/_authenticated/settings")({
   head: () => ({
@@ -148,6 +149,8 @@ function SettingsPage() {
         </div>
 
       </section>
+
+      <ThemePicker />
 
       <section className="space-y-4 rounded-3xl border border-border bg-card p-6">
         <div className="flex items-start gap-3">
