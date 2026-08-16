@@ -3,9 +3,11 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
-import { Loader2, Mic, MicOff, Sparkles, Trash2, Check } from "lucide-react";
+import { Loader2, Mic, Square, Sparkles, Trash2, Check, X } from "lucide-react";
 import { parseVoiceNote, saveVoiceExpenses } from "@/lib/voice.functions";
 import { formatINR } from "@/lib/expense-categories";
+import { startWavRecording, type WavRecorder } from "@/lib/wav-recorder";
+import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
@@ -17,12 +19,12 @@ export const Route = createFileRoute("/_authenticated/voice-notes")({
       {
         name: "description",
         content:
-          "Speak your expense — \"I spent 50 rupees for food yesterday\" — and it is logged on the right date automatically.",
+          "Speak your expense — \"I spent 50 rupees for food yesterday\" — confirm with Yes and it is logged on the right date.",
       },
       { property: "og:title", content: "Voice Notes — Prakash Expense Tracker" },
       {
         property: "og:description",
-        content: "Add expenses by talking. The date and amount are understood for you.",
+        content: "Add expenses by talking. Your words are turned into a clear sentence to confirm.",
       },
     ],
   }),
@@ -30,29 +32,6 @@ export const Route = createFileRoute("/_authenticated/voice-notes")({
 });
 
 type Draft = { description: string; amount: number; spent_on: string };
-
-// Minimal typing for the browser speech recognition API.
-type SpeechResultEvent = { results: ArrayLike<ArrayLike<{ transcript: string }>> };
-type Recognition = {
-  lang: string;
-  continuous: boolean;
-  interimResults: boolean;
-  start: () => void;
-  stop: () => void;
-  onresult: ((event: SpeechResultEvent) => void) | null;
-  onerror: ((event: { error?: string }) => void) | null;
-  onend: (() => void) | null;
-};
-
-function getRecognition(): Recognition | null {
-  if (typeof window === "undefined") return null;
-  const w = window as unknown as {
-    SpeechRecognition?: new () => Recognition;
-    webkitSpeechRecognition?: new () => Recognition;
-  };
-  const Ctor = w.SpeechRecognition ?? w.webkitSpeechRecognition;
-  return Ctor ? new Ctor() : null;
-}
 
 function prettyDate(iso: string) {
   const [y, m, d] = iso.split("-").map(Number);
@@ -69,75 +48,101 @@ function VoiceNotesPage() {
   const parse = useServerFn(parseVoiceNote);
   const save = useServerFn(saveVoiceExpenses);
 
-  const [supported, setSupported] = useState(false);
-  const [listening, setListening] = useState(false);
+  const [recording, setRecording] = useState(false);
+  const [seconds, setSeconds] = useState(0);
+  const [busy, setBusy] = useState<null | "transcribing" | "reading">(null);
   const [text, setText] = useState("");
+  const [summary, setSummary] = useState("");
   const [drafts, setDrafts] = useState<Draft[]>([]);
-  const [parsing, setParsing] = useState(false);
   const [saving, setSaving] = useState(false);
-  const recognitionRef = useRef<Recognition | null>(null);
+  const recorderRef = useRef<WavRecorder | null>(null);
 
   useEffect(() => {
-    setSupported(Boolean(getRecognition()));
-    return () => recognitionRef.current?.stop();
-  }, []);
+    if (!recording) return;
+    const timer = window.setInterval(() => setSeconds((s) => s + 1), 1000);
+    return () => window.clearInterval(timer);
+  }, [recording]);
 
-  function toggleListening() {
-    if (listening) {
-      recognitionRef.current?.stop();
-      setListening(false);
-      return;
+  useEffect(() => () => recorderRef.current?.cancel(), []);
+
+  async function startRecording() {
+    setSummary("");
+    setDrafts([]);
+    try {
+      recorderRef.current = await startWavRecording();
+      setSeconds(0);
+      setRecording(true);
+    } catch {
+      toast.error("Microphone access was blocked. Allow it in your browser settings, or type below.");
     }
-
-    const recognition = getRecognition();
-    if (!recognition) {
-      toast.error("Your browser can't record speech — type the note instead.");
-      return;
-    }
-
-    recognition.lang = "en-IN";
-    recognition.continuous = false;
-    recognition.interimResults = true;
-    recognition.onresult = (event) => {
-      let transcript = "";
-      for (let i = 0; i < event.results.length; i += 1) {
-        transcript += event.results[i]?.[0]?.transcript ?? "";
-      }
-      setText(transcript.trim());
-    };
-    recognition.onerror = (event) => {
-      setListening(false);
-      toast.error(
-        event.error === "not-allowed"
-          ? "Microphone access was blocked. Allow it in your browser settings."
-          : "Couldn't hear that. Try again or type the note.",
-      );
-    };
-    recognition.onend = () => setListening(false);
-
-    recognitionRef.current = recognition;
-    recognition.start();
-    setListening(true);
   }
 
-  async function handleParse() {
-    const note = text.trim();
-    if (note.length < 3) {
-      toast.error("Say or type what you spent first.");
+  async function stopRecording() {
+    const recorder = recorderRef.current;
+    recorderRef.current = null;
+    setRecording(false);
+    if (!recorder) return;
+
+    const blob = await recorder.stop();
+    if (blob.size < 4096) {
+      toast.error("That recording was too short — hold the mic and speak.");
       return;
     }
-    setParsing(true);
+
+    setBusy("transcribing");
     try {
-      const result = await parse({ data: { text: note } });
-      if (!result.items.length) {
-        toast.error("No expense found in that note. Mention the item and the amount.");
-      } else {
-        setDrafts(result.items);
-      }
+      const { data: session } = await supabase.auth.getSession();
+      const token = session.session?.access_token;
+      const form = new FormData();
+      form.append("file", blob, "recording.wav");
+
+      const response = await fetch("/api/transcribe", {
+        method: "POST",
+        headers: token ? { Authorization: `Bearer ${token}` } : undefined,
+        body: form,
+      });
+      const payload = (await response.json().catch(() => ({}))) as {
+        text?: string;
+        error?: string;
+      };
+      if (!response.ok) throw new Error(payload.error ?? "Could not hear that clearly.");
+
+      const heard = (payload.text ?? "").trim();
+      if (!heard) throw new Error("Nothing was heard. Try again a little closer to the mic.");
+      setText(heard);
+      await readNote(heard);
     } catch (error) {
       toast.error(error instanceof Error ? error.message : "Something went wrong.");
     } finally {
-      setParsing(false);
+      setBusy(null);
+    }
+  }
+
+  async function readNote(note: string) {
+    if (note.trim().length < 3) {
+      toast.error("Say or type what you spent first.");
+      return;
+    }
+    setBusy("reading");
+    try {
+      const result = await parse({ data: { text: note.trim() } });
+      if (!result.items.length) {
+        setSummary("");
+        setDrafts([]);
+        toast.error("No expense found in that note. Mention the item and the amount.");
+        return;
+      }
+      setDrafts(result.items);
+      setSummary(
+        result.summary ||
+          result.items
+            .map((i) => `${formatINR(i.amount)} on ${i.description} (${prettyDate(i.spent_on)})`)
+            .join(", "),
+      );
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : "Something went wrong.");
+    } finally {
+      setBusy(null);
     }
   }
 
@@ -156,6 +161,7 @@ function VoiceNotesPage() {
         });
       }
       setDrafts([]);
+      setSummary("");
       setText("");
       queryClient.invalidateQueries();
     } catch (error) {
@@ -166,10 +172,10 @@ function VoiceNotesPage() {
   }
 
   function updateDraft(index: number, patch: Partial<Draft>) {
-    setDrafts((current) =>
-      current.map((item, i) => (i === index ? { ...item, ...patch } : item)),
-    );
+    setDrafts((current) => current.map((item, i) => (i === index ? { ...item, ...patch } : item)));
   }
+
+  const working = busy !== null;
 
   return (
     <div className="space-y-6">
@@ -177,30 +183,39 @@ function VoiceNotesPage() {
         <div>
           <h1 className="text-lg font-semibold text-foreground">Voice notes</h1>
           <p className="mt-1 text-sm text-muted-foreground">
-            Tap the mic and talk normally — “I spent 50 rupees for food yesterday”. The amount and
-            the date are understood and filed on the right day.
+            Tap the mic and talk normally, even in broken English — “yesterday food fifty rupees
+            spent”. It becomes a clear sentence and you confirm with Yes before it is saved.
           </p>
         </div>
 
         <div className="flex flex-col items-center gap-3 rounded-2xl border border-border bg-secondary/40 px-4 py-6">
           <button
             type="button"
-            onClick={toggleListening}
-            aria-label={listening ? "Stop recording" : "Start recording"}
-            className={`flex size-20 items-center justify-center rounded-full transition-transform active:scale-95 ${
-              listening
+            onClick={recording ? stopRecording : startRecording}
+            disabled={working}
+            aria-label={recording ? "Stop recording" : "Start recording"}
+            className={`flex size-20 items-center justify-center rounded-full transition-transform active:scale-95 disabled:opacity-60 ${
+              recording
                 ? "animate-pulse bg-destructive text-destructive-foreground"
                 : "bg-primary text-primary-foreground"
             }`}
           >
-            {listening ? <MicOff className="size-8" /> : <Mic className="size-8" />}
+            {working ? (
+              <Loader2 className="size-8 animate-spin" />
+            ) : recording ? (
+              <Square className="size-7" />
+            ) : (
+              <Mic className="size-8" />
+            )}
           </button>
           <p className="text-xs text-muted-foreground">
-            {listening
-              ? "Listening… speak now"
-              : supported
-                ? "Tap to speak"
-                : "Speech isn't supported here — type the note below"}
+            {recording
+              ? `Listening… ${seconds}s — tap to stop`
+              : busy === "transcribing"
+                ? "Writing down what you said…"
+                : busy === "reading"
+                  ? "Understanding your note…"
+                  : "Tap to speak"}
           </p>
         </div>
 
@@ -213,21 +228,35 @@ function VoiceNotesPage() {
         />
 
         <Button
-          onClick={handleParse}
-          disabled={parsing}
+          onClick={() => readNote(text)}
+          disabled={working}
+          variant="secondary"
           className="w-full rounded-xl font-semibold"
         >
-          {parsing ? <Loader2 className="size-4 animate-spin" /> : <Sparkles className="size-4" />}
+          {busy === "reading" ? (
+            <Loader2 className="size-4 animate-spin" />
+          ) : (
+            <Sparkles className="size-4" />
+          )}
           Read my note
         </Button>
       </section>
 
       {drafts.length > 0 && (
         <section className="space-y-4 rounded-3xl border border-border bg-card p-6">
-          <h2 className="text-sm font-semibold text-foreground">Check before saving</h2>
+          <div>
+            <h2 className="text-sm font-semibold text-foreground">Did I get this right?</h2>
+            <p className="mt-2 rounded-2xl bg-secondary/50 p-3 text-sm leading-relaxed text-foreground">
+              {summary}
+            </p>
+          </div>
+
           <div className="space-y-3">
             {drafts.map((draft, index) => (
-              <div key={index} className="space-y-2 rounded-2xl border border-border bg-secondary/40 p-3">
+              <div
+                key={index}
+                className="space-y-2 rounded-2xl border border-border bg-secondary/40 p-3"
+              >
                 <Input
                   value={draft.description}
                   onChange={(event) => updateDraft(index, { description: event.target.value })}
@@ -265,14 +294,27 @@ function VoiceNotesPage() {
             ))}
           </div>
 
-          <Button
-            onClick={handleSave}
-            disabled={saving}
-            className="w-full rounded-xl font-semibold"
-          >
-            {saving ? <Loader2 className="size-4 animate-spin" /> : <Check className="size-4" />}
-            Save {drafts.length} expense{drafts.length > 1 ? "s" : ""}
-          </Button>
+          <div className="flex gap-3">
+            <Button
+              onClick={handleSave}
+              disabled={saving}
+              className="flex-1 rounded-xl font-semibold"
+            >
+              {saving ? <Loader2 className="size-4 animate-spin" /> : <Check className="size-4" />}
+              Yes, add {drafts.length > 1 ? `${drafts.length} expenses` : "it"}
+            </Button>
+            <Button
+              variant="outline"
+              onClick={() => {
+                setDrafts([]);
+                setSummary("");
+              }}
+              className="flex-1 rounded-xl font-semibold"
+            >
+              <X className="size-4" />
+              No, redo
+            </Button>
+          </div>
         </section>
       )}
     </div>
