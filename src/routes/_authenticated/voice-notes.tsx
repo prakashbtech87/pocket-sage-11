@@ -253,7 +253,9 @@ function VoiceNotesPage() {
       {drafts.length > 0 && (
         <section className="space-y-4 rounded-3xl border border-border bg-card p-6">
           <div>
-            <h2 className="text-sm font-semibold text-foreground">Did I get this right?</h2>
+            <h2 className="text-sm font-semibold text-foreground">
+              Do you want to add this to your expenses?
+            </h2>
             <p className="mt-2 rounded-2xl bg-secondary/50 p-3 text-sm leading-relaxed text-foreground">
               {summary}
             </p>
