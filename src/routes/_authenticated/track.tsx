@@ -67,7 +67,16 @@ function TrackPage() {
       setAmount("");
       invalidate();
       toast.success(`${formatINR(Number(row.amount_inr))} logged as ${row.category}`);
+      for (const alert of row.alerts ?? []) {
+        toast.warning(`${alert.threshold}% of your monthly budget is spent`, {
+          description:
+            alert.remaining >= 0
+              ? `${formatINR(alert.remaining)} left for the rest of the month.`
+              : `Over budget by ${formatINR(Math.abs(alert.remaining))}.`,
+        });
+      }
     },
+
     onError: (error: Error) => toast.error(error.message),
   });
 

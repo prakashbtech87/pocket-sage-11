@@ -1,7 +1,7 @@
 {
   "name": "Prakash Expense Tracker",
   "short_name": "Expenses",
-  "description": "Log daily spending in rupees and get a 9 PM email report with saving advice.",
+  "description": "Log daily spending in rupees and get a 11:45 PM email report with saving advice.",
   "start_url": "/track",
   "scope": "/",
   "display": "standalone",

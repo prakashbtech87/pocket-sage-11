@@ -68,8 +68,20 @@ export const addExpense = createServerFn({ method: "POST" })
       .single();
 
     if (error) throw new Error(error.message);
-    return row;
+
+    let alerts: import("./budget-alerts.server").BudgetAlert[] = [];
+    try {
+      const { checkBudgetAlerts, emailBudgetAlert } = await import("./budget-alerts.server");
+      alerts = await checkBudgetAlerts(supabase, userId);
+      const highest = alerts[alerts.length - 1];
+      if (highest) await emailBudgetAlert(userId, highest);
+    } catch (alertError) {
+      console.error("budget alert check failed", alertError);
+    }
+
+    return { ...row, alerts };
   });
+
 
 export const listExpenses = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])

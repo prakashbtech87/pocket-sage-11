@@ -13,6 +13,10 @@ import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { supabase } from "@/integrations/supabase/client";
 import { Toaster } from "@/components/ui/sonner";
+import { applyTheme, readStoredTheme } from "@/lib/theme";
+
+// Runs before paint so a saved theme never flashes the default one.
+const THEME_BOOTSTRAP = `try{var t=localStorage.getItem("pet-theme")||"default";var r=document.documentElement;r.classList.add("theme-"+t);r.classList.toggle("dark",t!=="light");}catch(e){}`;
 
 function NotFoundComponent() {
   return (
@@ -86,7 +90,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       {
         name: "description",
         content:
-          "Log what you spend in rupees in two taps, get automatic categories and a daily 9 PM email report.",
+          "Log what you spend in rupees in two taps, get automatic categories and a daily 11:45 PM email report.",
       },
       { name: "theme-color", content: "#1a1d22" },
       { name: "apple-mobile-web-app-capable", content: "yes" },
@@ -126,9 +130,10 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 
 function RootShell({ children }: { children: ReactNode }) {
   return (
-    <html lang="en" className="dark">
+    <html lang="en" className="dark theme-default">
       <head>
         <HeadContent />
+        <script dangerouslySetInnerHTML={{ __html: THEME_BOOTSTRAP }} />
       </head>
       <body>
         {children}
@@ -141,6 +146,10 @@ function RootShell({ children }: { children: ReactNode }) {
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
   const router = useRouter();
+
+  useEffect(() => {
+    applyTheme(readStoredTheme());
+  }, []);
 
   useEffect(() => {
     const { data } = supabase.auth.onAuthStateChange((event) => {

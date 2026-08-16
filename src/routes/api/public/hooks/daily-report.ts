@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 
 /**
- * Called by the scheduled job every day at 21:00 IST (15:30 UTC).
+ * Called by the scheduled job every day at 23:45 IST (18:15 UTC).
  * Sends each user with reports enabled their daily spend summary by email.
  */
 export const Route = createFileRoute("/api/public/hooks/daily-report")({

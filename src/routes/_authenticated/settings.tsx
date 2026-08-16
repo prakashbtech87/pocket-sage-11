@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
+import { ThemePicker } from "@/components/theme-picker";
 
 export const Route = createFileRoute("/_authenticated/settings")({
   head: () => ({
@@ -16,12 +17,12 @@ export const Route = createFileRoute("/_authenticated/settings")({
       { title: "Settings — Prakash Expense Tracker" },
       {
         name: "description",
-        content: "Choose where your 9 PM daily spending report is emailed and manage your profile.",
+        content: "Choose where your 11:45 PM daily spending report is emailed and manage your profile.",
       },
       { property: "og:title", content: "Settings" },
       {
         property: "og:description",
-        content: "Manage your daily 9 PM email report and profile details.",
+        content: "Manage your daily 11:45 PM email report and profile details.",
       },
     ],
   }),
@@ -108,13 +109,13 @@ function SettingsPage() {
           <p className="text-xs text-muted-foreground">
             This defaults to the email address of the account you signed in with — your report only
             ever goes to you, never to the app author or anyone else. Delivered automatically every
-            day at 9:00 PM IST as a no-reply message.
+            day at 11:45 PM IST as a no-reply message.
           </p>
         </div>
 
         <div className="flex items-center justify-between rounded-xl border border-border bg-secondary px-4 py-3">
           <div>
-            <p className="text-sm font-medium text-foreground">Automatic 9 PM email</p>
+            <p className="text-sm font-medium text-foreground">Automatic 11:45 PM email</p>
             <p className="text-xs text-muted-foreground">Turn off to pause daily reports.</p>
           </div>
           <Switch checked={enabled} onCheckedChange={setEnabled} />
@@ -148,6 +149,8 @@ function SettingsPage() {
         </div>
 
       </section>
+
+      <ThemePicker />
 
       <section className="space-y-4 rounded-3xl border border-border bg-card p-6">
         <div className="flex items-start gap-3">
