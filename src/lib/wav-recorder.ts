@@ -51,6 +51,7 @@ export async function startWavRecording(): Promise<WavRecorder> {
     window.AudioContext ??
     (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
   const ctx = new AudioCtx();
+  if (ctx.state === "suspended") await ctx.resume();
   const source = ctx.createMediaStreamSource(stream);
   const node = ctx.createScriptProcessor(4096, 1, 1);
   const chunks: Float32Array[] = [];
