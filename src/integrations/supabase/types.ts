@@ -41,6 +41,36 @@ export type Database = {
         }
         Relationships: []
       }
+      budget_alerts: {
+        Row: {
+          budget_inr: number
+          created_at: string
+          id: string
+          month: string
+          spent_inr: number
+          threshold: number
+          user_id: string
+        }
+        Insert: {
+          budget_inr?: number
+          created_at?: string
+          id?: string
+          month: string
+          spent_inr?: number
+          threshold: number
+          user_id: string
+        }
+        Update: {
+          budget_inr?: number
+          created_at?: string
+          id?: string
+          month?: string
+          spent_inr?: number
+          threshold?: number
+          user_id?: string
+        }
+        Relationships: []
+      }
       category_rules: {
         Row: {
           category: string
