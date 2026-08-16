@@ -24,8 +24,7 @@ export const parseVoiceNote = createServerFn({ method: "POST" })
   .inputValidator((input: unknown) => NoteInput.parse(input))
   .handler(async ({ data }) => {
     const { parseVoiceNoteText } = await import("./voice.server");
-    const items = await parseVoiceNoteText(data.text);
-    return { items };
+    return parseVoiceNoteText(data.text);
   });
 
 export const saveVoiceExpenses = createServerFn({ method: "POST" })
