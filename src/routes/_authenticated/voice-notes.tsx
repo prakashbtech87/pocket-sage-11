@@ -311,7 +311,7 @@ function VoiceNotesPage() {
               className="flex-1 rounded-xl font-semibold"
             >
               {saving ? <Loader2 className="size-4 animate-spin" /> : <Check className="size-4" />}
-              Yes, add {drafts.length > 1 ? `${drafts.length} expenses` : "it"}
+              Yes
             </Button>
             <Button
               variant="outline"
@@ -322,7 +322,7 @@ function VoiceNotesPage() {
               className="flex-1 rounded-xl font-semibold"
             >
               <X className="size-4" />
-              No, redo
+              No
             </Button>
           </div>
         </section>
