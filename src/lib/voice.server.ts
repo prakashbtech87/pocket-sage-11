@@ -28,7 +28,7 @@ export async function parseVoiceNoteText(text: string): Promise<ParsedVoiceNote>
     method: "POST",
     headers: { "Content-Type": "application/json", "Lovable-API-Key": apiKey },
     body: JSON.stringify({
-      model: "google/gemini-3-flash",
+      model: "google/gemini-3.6-flash",
       messages: [
         {
           role: "system",
