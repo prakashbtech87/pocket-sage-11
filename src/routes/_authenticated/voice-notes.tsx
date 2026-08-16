@@ -189,35 +189,43 @@ function VoiceNotesPage() {
         </div>
 
         <div className="flex flex-col items-center gap-3 rounded-2xl border border-border bg-secondary/40 px-4 py-6">
-          <button
-            type="button"
-            onClick={recording ? stopRecording : startRecording}
-            disabled={working}
-            aria-label={recording ? "Stop recording" : "Start recording"}
-            className={`flex size-20 items-center justify-center rounded-full transition-transform active:scale-95 disabled:opacity-60 ${
-              recording
-                ? "animate-pulse bg-destructive text-destructive-foreground"
-                : "bg-primary text-primary-foreground"
-            }`}
-          >
-            {working ? (
-              <Loader2 className="size-8 animate-spin" />
-            ) : recording ? (
-              <Square className="size-7" />
-            ) : (
-              <Mic className="size-8" />
-            )}
-          </button>
+          <div className="flex w-full gap-3">
+            <Button
+              onClick={startRecording}
+              disabled={recording || working}
+              className="h-12 flex-1 rounded-xl font-semibold"
+            >
+              <Mic className="size-5" />
+              Record
+            </Button>
+            <Button
+              onClick={stopRecording}
+              disabled={!recording}
+              variant="destructive"
+              className="h-12 flex-1 rounded-xl font-semibold"
+            >
+              <Square className="size-5" />
+              Stop
+            </Button>
+          </div>
           <p className="text-xs text-muted-foreground">
             {recording
-              ? `Listening… ${seconds}s — tap to stop`
+              ? `Recording… ${seconds}s — press Stop when done`
               : busy === "transcribing"
                 ? "Writing down what you said…"
                 : busy === "reading"
                   ? "Understanding your note…"
-                  : "Tap to speak"}
+                  : "Press Record, speak, then press Stop"}
           </p>
+          {working && <Loader2 className="size-5 animate-spin text-muted-foreground" />}
         </div>
+
+        {text && !recording && (
+          <div className="rounded-2xl border border-border bg-secondary/50 p-3">
+            <p className="text-xs font-medium text-muted-foreground">You said</p>
+            <p className="mt-1 text-sm leading-relaxed text-foreground">{text}</p>
+          </div>
+        )}
 
         <Textarea
           value={text}
