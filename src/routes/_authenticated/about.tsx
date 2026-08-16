@@ -53,9 +53,9 @@ const GUIDE_STEPS = [
   },
   {
     icon: Mail,
-    title: "4. Get your report at 9 PM",
+    title: "4. Get your report at 11:45 PM",
     body:
-      "A daily, weekly or monthly report lands in your own inbox every night at 9:00 PM IST. You can also send one instantly from Home.",
+      "A daily, weekly or monthly report lands in your own inbox every night at 11:45 PM IST. You can also send one instantly from Home.",
   },
   {
     icon: Smartphone,

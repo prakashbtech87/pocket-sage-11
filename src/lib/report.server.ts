@@ -226,7 +226,7 @@ export async function sendReportForUser(
   return { sent: true as const, to: profile.report_email, count: periodRows.length, period };
 }
 
-/** Scheduled 9 PM job entry point — respects the user's on/off switch. */
+/** Scheduled 11:45 PM job entry point — respects the user's on/off switch. */
 export async function sendDailyReportForUser(userId: string, date = istToday()) {
   const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
   const { data: profile } = await supabaseAdmin

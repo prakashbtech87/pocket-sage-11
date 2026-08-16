@@ -86,7 +86,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       {
         name: "description",
         content:
-          "Log what you spend in rupees in two taps, get automatic categories and a daily 9 PM email report.",
+          "Log what you spend in rupees in two taps, get automatic categories and a daily 11:45 PM email report.",
       },
       { name: "theme-color", content: "#1a1d22" },
       { name: "apple-mobile-web-app-capable", content: "yes" },
