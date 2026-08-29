@@ -87,6 +87,7 @@ function AuthenticatedLayout() {
       </header>
 
       <main className="mx-auto max-w-2xl px-5 py-6">
+        <SpendReminder />
         <Outlet />
       </main>
 
