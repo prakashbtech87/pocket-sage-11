@@ -14,6 +14,7 @@ import {
   Mic,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { SpendReminder } from "@/components/spend-reminder";
 
 export const Route = createFileRoute("/_authenticated")({
   ssr: false,
