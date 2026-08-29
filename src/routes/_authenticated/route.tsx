@@ -14,6 +14,7 @@ import {
   Mic,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { SpendReminder } from "@/components/spend-reminder";
 
 export const Route = createFileRoute("/_authenticated")({
   ssr: false,
@@ -86,6 +87,7 @@ function AuthenticatedLayout() {
       </header>
 
       <main className="mx-auto max-w-2xl px-5 py-6">
+        <SpendReminder />
         <Outlet />
       </main>
 

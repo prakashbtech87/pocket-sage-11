@@ -1,7 +1,7 @@
 export const THEMES = [
-  { id: "default", label: "Default", hint: "Charcoal + amber", swatch: "#f0b429" },
+  { id: "default", label: "Charcoal", hint: "Charcoal + amber", swatch: "#f0b429" },
   { id: "dark", label: "Dark", hint: "Pure black & white", swatch: "#e6e6e6" },
-  { id: "blue", label: "Blue", hint: "Deep navy + azure", swatch: "#4b8ef7" },
+  { id: "blue", label: "Dark blue", hint: "Deep navy + azure (default)", swatch: "#4b8ef7" },
   { id: "red", label: "Red", hint: "Warm crimson", swatch: "#e2503f" },
   { id: "light", label: "Light", hint: "Bright daylight", swatch: "#f5f1e8" },
 ] as const;
@@ -24,9 +24,9 @@ export function applyTheme(theme: ThemeId) {
 }
 
 export function readStoredTheme(): ThemeId {
-  if (typeof window === "undefined") return "default";
+  if (typeof window === "undefined") return "blue";
   const stored = window.localStorage.getItem(THEME_STORAGE_KEY);
-  return isThemeId(stored) ? stored : "default";
+  return isThemeId(stored) ? stored : "blue";
 }
 
 export function storeTheme(theme: ThemeId) {
