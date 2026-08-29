@@ -16,7 +16,7 @@ import { Toaster } from "@/components/ui/sonner";
 import { applyTheme, readStoredTheme } from "@/lib/theme";
 
 // Runs before paint so a saved theme never flashes the default one.
-const THEME_BOOTSTRAP = `try{var t=localStorage.getItem("pet-theme")||"default";var r=document.documentElement;r.classList.add("theme-"+t);r.classList.toggle("dark",t!=="light");}catch(e){}`;
+const THEME_BOOTSTRAP = `try{var t=localStorage.getItem("pet-theme")||"blue";var r=document.documentElement;r.classList.add("theme-"+t);r.classList.toggle("dark",t!=="light");}catch(e){}`;
 
 function NotFoundComponent() {
   return (
@@ -92,7 +92,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         content:
           "Log what you spend in rupees in two taps, get automatic categories and a daily 11:45 PM email report.",
       },
-      { name: "theme-color", content: "#1a1d22" },
+      { name: "theme-color", content: "#101827" },
       { name: "apple-mobile-web-app-capable", content: "yes" },
       { name: "apple-mobile-web-app-title", content: "Expense Tracker" },
       {
@@ -130,7 +130,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 
 function RootShell({ children }: { children: ReactNode }) {
   return (
-    <html lang="en" className="dark theme-default">
+    <html lang="en" className="dark theme-blue">
       <head>
         <HeadContent />
         <script dangerouslySetInnerHTML={{ __html: THEME_BOOTSTRAP }} />
