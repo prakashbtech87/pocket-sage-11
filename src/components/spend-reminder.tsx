@@ -49,6 +49,7 @@ export function SpendReminder() {
   if (!data) return null;
 
   const advice = buildBudgetAdvice(data).slice(0, 2);
+  const picks = dailyPicks();
   const pct = data.budget ? Math.min(100, (data.spent / data.budget) * 100) : 0;
   const remaining = data.remaining ?? 0;
   const over = remaining < 0;
