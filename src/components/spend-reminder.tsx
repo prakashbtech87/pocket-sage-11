@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import { Link } from "@tanstack/react-router";
-import { PiggyBank, TrendingDown, Wallet } from "lucide-react";
+import { Lightbulb, PiggyBank, Sparkles, Target, TrendingDown, Wallet } from "lucide-react";
 import { useBudgetStatus } from "@/components/budget";
 import { buildBudgetAdvice, monthLabel } from "@/lib/budget-advice";
+import { dailyPicks } from "@/lib/daily-tips";
 import { formatINR } from "@/lib/expense-categories";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
