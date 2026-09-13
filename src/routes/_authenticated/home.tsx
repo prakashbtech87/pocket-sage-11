@@ -40,9 +40,6 @@ const QUICK_LINKS = [
   { to: "/settings", label: "Settings", body: "Reports, email and profile.", icon: Settings },
 ] as const;
 
-function dayIndex() {
-  return Math.floor(Date.now() / 86_400_000);
-}
 
 function HomePage() {
   const fetchProfile = useServerFn(getProfile);
