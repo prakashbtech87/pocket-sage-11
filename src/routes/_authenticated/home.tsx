@@ -111,6 +111,14 @@ function HomePage() {
           </div>
           <p className="mt-3 text-sm leading-relaxed text-foreground">{vibe}</p>
         </section>
+
+        <section className="rounded-3xl border border-border bg-card p-6 sm:col-span-2">
+          <div className="flex items-center gap-2 text-primary">
+            <Sparkles className="size-4" />
+            <h2 className="text-sm font-semibold">Today's advice</h2>
+          </div>
+          <p className="mt-3 text-sm leading-relaxed text-foreground">{advice}</p>
+        </section>
       </div>
 
       <section className="rounded-3xl border border-border bg-card p-6">
