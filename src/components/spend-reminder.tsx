@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import { Link } from "@tanstack/react-router";
-import { PiggyBank, TrendingDown, Wallet } from "lucide-react";
+import { Lightbulb, PiggyBank, Sparkles, Target, TrendingDown, Wallet } from "lucide-react";
 import { useBudgetStatus } from "@/components/budget";
 import { buildBudgetAdvice, monthLabel } from "@/lib/budget-advice";
+import { dailyPicks } from "@/lib/daily-tips";
 import { formatINR } from "@/lib/expense-categories";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
@@ -48,13 +49,14 @@ export function SpendReminder() {
   if (!data) return null;
 
   const advice = buildBudgetAdvice(data).slice(0, 2);
+  const picks = dailyPicks();
   const pct = data.budget ? Math.min(100, (data.spent / data.budget) * 100) : 0;
   const remaining = data.remaining ?? 0;
   const over = remaining < 0;
 
   return (
     <Dialog open={open} onOpenChange={(v) => (v ? setOpen(true) : dismiss())}>
-      <DialogContent className="rounded-3xl">
+      <DialogContent className="max-h-[85vh] overflow-y-auto rounded-3xl">
         <DialogHeader>
           <DialogTitle className="font-display text-xl">
             You've spent {formatINR(data.spent)} so far
@@ -106,6 +108,26 @@ export function SpendReminder() {
             </p>
           ))}
         </div>
+
+        <div className="space-y-2">
+          {[
+            { icon: Lightbulb, label: "Tip of the day", text: picks.tip },
+            { icon: Target, label: "Today's advice", text: picks.advice },
+            { icon: Sparkles, label: "Positive vibes", text: picks.vibe },
+          ].map((item) => (
+            <div
+              key={item.label}
+              className="rounded-2xl border border-border bg-card px-4 py-3"
+            >
+              <p className="flex items-center gap-1.5 text-xs font-semibold text-primary">
+                <item.icon className="size-3.5" />
+                {item.label}
+              </p>
+              <p className="mt-1 text-sm leading-relaxed text-foreground">{item.text}</p>
+            </div>
+          ))}
+        </div>
+
 
         <DialogFooter className="gap-2">
           <Button variant="outline" onClick={dismiss} className="rounded-xl">

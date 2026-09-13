@@ -7,6 +7,7 @@ import { ArrowRight, BarChart3, Mail, PlusCircle, Settings, Table2, Sparkles, Sh
 import { getProfile, sendReportNow } from "@/lib/expenses.functions";
 import { Button } from "@/components/ui/button";
 import { BudgetBanner } from "@/components/budget";
+import { dailyPicks } from "@/lib/daily-tips";
 import heroImg from "@/assets/home-hero.png";
 import savingsImg from "@/assets/home-savings.png";
 
@@ -29,31 +30,6 @@ export const Route = createFileRoute("/_authenticated/home")({
   component: HomePage,
 });
 
-const MONEY_TIPS = [
-  "Wait 24 hours before any unplanned purchase above ₹500. Most wants quietly disappear overnight.",
-  "Pay yourself first: move 10% into savings the day money arrives, not whatever is left at month end.",
-  "Cook one extra meal at home this week. One swap a day is roughly ₹4,000 saved a month.",
-  "Cancel one subscription you haven't opened in 30 days. Small leaks sink big boats.",
-  "Carry a list when you shop. Lists spend money; moods burn it.",
-  "Round every spend up to the next ₹100 and park the difference — painless saving.",
-  "Set a weekly ceiling for food delivery instead of a daily one. It's easier to keep.",
-  "Automate a small SIP. Consistency beats timing, always.",
-  "Before buying, ask: does this cost me money once, or every month?",
-  "Keep one no-spend day a week. It resets your habits more than any budget app can.",
-];
-
-const VIBE_TIPS = [
-  "Money is a tool, not a scoreboard. You're already ahead by tracking it.",
-  "Small, boring, repeated choices are what wealth is actually made of.",
-  "You can't change last month. You can absolutely shape this evening.",
-  "Progress over perfection — one logged expense today beats a perfect plan tomorrow.",
-  "Being honest with your numbers is a form of self-respect.",
-  "Calm finances make for a calm mind. You're building both.",
-  "Every rupee you don't waste is a rupee of future freedom.",
-  "You're not behind. You're building.",
-  "Celebrate the saved ₹100 as loudly as you'd mourn the wasted ₹1,000.",
-  "The best day to start was yesterday. The second best is right now.",
-];
 
 const QUICK_LINKS = [
   { to: "/track", label: "Log a spend", body: "Two fields — what and how much.", icon: PlusCircle },
@@ -65,9 +41,6 @@ const QUICK_LINKS = [
   { to: "/settings", label: "Settings", body: "Reports, email and profile.", icon: Settings },
 ] as const;
 
-function dayIndex() {
-  return Math.floor(Date.now() / 86_400_000);
-}
 
 function HomePage() {
   const fetchProfile = useServerFn(getProfile);
@@ -87,9 +60,7 @@ function HomePage() {
     }
   }
 
-  const i = dayIndex();
-  const tip = MONEY_TIPS[i % MONEY_TIPS.length];
-  const vibe = VIBE_TIPS[i % VIBE_TIPS.length];
+  const { tip, vibe, advice } = dailyPicks();
 
   return (
     <div className="space-y-6">
@@ -139,6 +110,14 @@ function HomePage() {
             <h2 className="text-sm font-semibold">Positive vibes</h2>
           </div>
           <p className="mt-3 text-sm leading-relaxed text-foreground">{vibe}</p>
+        </section>
+
+        <section className="rounded-3xl border border-border bg-card p-6 sm:col-span-2">
+          <div className="flex items-center gap-2 text-primary">
+            <Sparkles className="size-4" />
+            <h2 className="text-sm font-semibold">Today's advice</h2>
+          </div>
+          <p className="mt-3 text-sm leading-relaxed text-foreground">{advice}</p>
         </section>
       </div>
 
