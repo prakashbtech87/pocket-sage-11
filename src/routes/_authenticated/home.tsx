@@ -59,9 +59,7 @@ function HomePage() {
     }
   }
 
-  const i = dayIndex();
-  const tip = MONEY_TIPS[i % MONEY_TIPS.length];
-  const vibe = VIBE_TIPS[i % VIBE_TIPS.length];
+  const { tip, vibe, advice } = dailyPicks();
 
   return (
     <div className="space-y-6">
