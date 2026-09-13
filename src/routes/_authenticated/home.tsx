@@ -7,6 +7,7 @@ import { ArrowRight, BarChart3, Mail, PlusCircle, Settings, Table2, Sparkles, Sh
 import { getProfile, sendReportNow } from "@/lib/expenses.functions";
 import { Button } from "@/components/ui/button";
 import { BudgetBanner } from "@/components/budget";
+import { dailyPicks } from "@/lib/daily-tips";
 import heroImg from "@/assets/home-hero.png";
 import savingsImg from "@/assets/home-savings.png";
 
