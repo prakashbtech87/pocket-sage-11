@@ -108,6 +108,26 @@ export function SpendReminder() {
           ))}
         </div>
 
+        <div className="space-y-2">
+          {[
+            { icon: Lightbulb, label: "Tip of the day", text: picks.tip },
+            { icon: Target, label: "Today's advice", text: picks.advice },
+            { icon: Sparkles, label: "Positive vibes", text: picks.vibe },
+          ].map((item) => (
+            <div
+              key={item.label}
+              className="rounded-2xl border border-border bg-card px-4 py-3"
+            >
+              <p className="flex items-center gap-1.5 text-xs font-semibold text-primary">
+                <item.icon className="size-3.5" />
+                {item.label}
+              </p>
+              <p className="mt-1 text-sm leading-relaxed text-foreground">{item.text}</p>
+            </div>
+          ))}
+        </div>
+
+
         <DialogFooter className="gap-2">
           <Button variant="outline" onClick={dismiss} className="rounded-xl">
             Got it
