@@ -56,7 +56,7 @@ export function SpendReminder() {
 
   return (
     <Dialog open={open} onOpenChange={(v) => (v ? setOpen(true) : dismiss())}>
-      <DialogContent className="rounded-3xl">
+      <DialogContent className="max-h-[85vh] overflow-y-auto rounded-3xl">
         <DialogHeader>
           <DialogTitle className="font-display text-xl">
             You've spent {formatINR(data.spent)} so far
