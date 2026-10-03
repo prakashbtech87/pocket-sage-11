@@ -17,12 +17,12 @@ export const Route = createFileRoute("/_authenticated/settings")({
       { title: "Settings — Prakash Expense Tracker" },
       {
         name: "description",
-        content: "Choose where your 11:45 PM daily spending report is emailed and manage your profile.",
+        content: "Choose where your reports are emailed when you send them and manage your profile.",
       },
       { property: "og:title", content: "Settings" },
       {
         property: "og:description",
-        content: "Manage your daily 11:45 PM email report and profile details.",
+        content: "Manage your email reports and profile details.",
       },
     ],
   }),

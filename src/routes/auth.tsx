@@ -15,12 +15,12 @@ export const Route = createFileRoute("/auth")({
       { title: "Sign in — Prakash Expense Tracker" },
       {
         name: "description",
-        content: "Sign in to log your daily spending in rupees and get your 11:45 PM email report.",
+        content: "Sign in to log your daily spending in rupees and get email reports on demand.",
       },
       { property: "og:title", content: "Sign in — Prakash Expense Tracker" },
       {
         property: "og:description",
-        content: "Access your daily rupee expense log and nightly spending report.",
+        content: "Access your daily rupee expense log and on-demand spending reports.",
       },
     ],
   }),
