@@ -108,15 +108,15 @@ function SettingsPage() {
           />
           <p className="text-xs text-muted-foreground">
             This defaults to the email address of the account you signed in with — your report only
-            ever goes to you, never to the app author or anyone else. Delivered automatically every
-            day at 11:45 PM IST as a no-reply message.
+            ever goes to you, never to the app author or anyone else. Sent only when you tap a Send
+            report button — there is no automatic daily email.
           </p>
         </div>
 
         <div className="flex items-center justify-between rounded-xl border border-border bg-secondary px-4 py-3">
           <div>
-            <p className="text-sm font-medium text-foreground">Automatic 11:45 PM email</p>
-            <p className="text-xs text-muted-foreground">Turn off to pause daily reports.</p>
+            <p className="text-sm font-medium text-foreground">Budget alert emails</p>
+            <p className="text-xs text-muted-foreground">Emails when you cross 50%, 55%… of your monthly budget.</p>
           </div>
           <Switch checked={enabled} onCheckedChange={setEnabled} />
         </div>
