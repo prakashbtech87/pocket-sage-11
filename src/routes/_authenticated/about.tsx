@@ -53,9 +53,9 @@ const GUIDE_STEPS = [
   },
   {
     icon: Mail,
-    title: "4. Get your report at 11:45 PM",
+    title: "4. Send your report anytime",
     body:
-      "A daily, weekly or monthly report lands in your own inbox every night at 11:45 PM IST. You can also send one instantly from Home.",
+      "A daily, weekly or monthly report lands in your own inbox only when you tap Send report (Home, Insights or Review).",
   },
   {
     icon: Smartphone,

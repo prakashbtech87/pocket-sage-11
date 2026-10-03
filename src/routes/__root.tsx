@@ -1,3 +1,4 @@
+import type { ErrorComponentProps } from "@tanstack/react-router";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import {
   Outlet,
@@ -40,7 +41,7 @@ function NotFoundComponent() {
   );
 }
 
-function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
+function ErrorComponent({ error, reset }: ErrorComponentProps) {
   console.error(error);
   const router = useRouter();
   useEffect(() => {
@@ -90,7 +91,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       {
         name: "description",
         content:
-          "Log what you spend in rupees in two taps, get automatic categories and a daily 11:45 PM email report.",
+          "Log what you spend in rupees in two taps, get automatic categories and on-demand email reports.",
       },
       { name: "theme-color", content: "#101827" },
       { name: "apple-mobile-web-app-capable", content: "yes" },

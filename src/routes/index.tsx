@@ -11,13 +11,13 @@ export const Route = createFileRoute("/")({
       {
         name: "description",
         content:
-          "Log every rupee in two taps, get automatic categories, avoidable-spend alerts and a daily 11:45 PM email report.",
+          "Log every rupee in two taps, get automatic categories, avoidable-spend alerts and on-demand email reports.",
       },
       { property: "og:title", content: "Prakash Expense Tracker" },
       {
         property: "og:description",
         content:
-          "Two-tap daily expense logging in INR with automatic categories and a 11:45 PM email report.",
+          "Two-tap daily expense logging in INR with automatic categories and on-demand email reports.",
       },
     ],
   }),
@@ -37,7 +37,7 @@ const FEATURES = [
   },
   {
     icon: Mail,
-    title: "11:45 PM report, every day",
+    title: "Email report on demand",
     body: "A full breakdown lands in your inbox each night with honest advice for tomorrow.",
   },
   {
@@ -74,7 +74,7 @@ function Landing() {
         <p className="mt-6 max-w-lg text-lg leading-relaxed text-muted-foreground">
           I am Prakash Karuppusamy, and I'll be helping you build your Financial Wellbeing. Type
           what you spent on and how much — the app sorts it, spots what was avoidable, and emails
-          the report to <span className="text-foreground">your own inbox</span>, every night at 11:45 PM.
+          the report to <span className="text-foreground">your own inbox</span>, only when you tap Send report.
         </p>
 
         <p className="mt-4 max-w-lg text-sm leading-relaxed text-muted-foreground">
